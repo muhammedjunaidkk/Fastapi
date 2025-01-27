@@ -29,7 +29,7 @@ jobs:
 
           echo "Pulling latest code from GitHub..."
           cd ~/Fastapi
-          git pull main
+          git pull origin main
 
           echo "Building and restarting Docker container for main..."
           docker-compose down
