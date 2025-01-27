@@ -3,7 +3,7 @@ name: Deploy uat
 on:
   push:
     branches:
-      - uat
+      - main
 
 jobs:
   deploy:
@@ -29,11 +29,11 @@ jobs:
 
           echo "Pulling latest code from GitHub..."
           cd ~/Fast-API
-          git pull uat
+          git pull main
 
-          echo "Building and restarting Docker container for uat..."
+          echo "Building and restarting Docker container for main..."
           docker-compose down
-          docker-compose up -d --build api-uat
+          docker-compose up -d --build api-prod
 
           echo "Deployment to prod completed successfully!"
         EOF
