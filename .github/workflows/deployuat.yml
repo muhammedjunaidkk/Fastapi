@@ -31,9 +31,33 @@ jobs:
           cd ~/Fastapi
           git pull origin main
 
-          echo "Building and restarting Docker container for main..."
-          docker-compose down
-          docker-compose up -d --build api-prod
 
-          echo "Deployment to prod completed successfully!"
-        EOF
+
+          if [ $? -ne 0 ]; then
+            echo "Error: Failed to pull the latest code. Exiting..."
+            exit 1
+          fi
+
+          echo "Building and restarting Docker container for main..."
+
+          # Stop and remove the existing container
+          docker stop mainapp || true
+          docker rm mainapp || true
+
+          # Build a new Docker image
+          docker build -t main-app .
+
+          if [ $? -ne 0 ]; then
+            echo "Error: Docker build failed. Exiting..."
+            exit 1
+          fi
+
+          # Run the new container
+          docker run -d --name main-container -p 8000:8000 main-app
+
+          if [ $? -eq 0 ]; then
+            echo "Docker container for main is up and running!"
+          else
+            echo "Error: Failed to start the Docker container. Exiting..."
+            exit 1
+          fiOF
