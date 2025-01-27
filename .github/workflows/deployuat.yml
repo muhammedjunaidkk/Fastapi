@@ -28,7 +28,7 @@ jobs:
           set -e
 
           echo "Pulling latest code from GitHub..."
-          cd ~/Fast-API
+          cd ~/Fastapi
           git pull main
 
           echo "Building and restarting Docker container for main..."
