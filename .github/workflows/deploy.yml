@@ -1,0 +1,49 @@
+name: CI/CD for UAT and Main
+
+on:
+  push:
+    branches:
+      - main
+      - uat
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up SSH for accessing the server
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      # Step 3: Deploy changes
+      - name: Deploy to Server
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+        run: |
+          echo "Deploying branch $GITHUB_REF_NAME"
+
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+              cd /home/ubuntu/Fastapi &&
+              git pull origin main &&
+              docker build -t mainapp . &&
+              docker stop mainapp || true &&
+              docker rm mainapp || true &&
+              docker run -d --name mainapp -p 8080:8000 mainapp
+            EOF
+          elif [ "$GITHUB_REF_NAME" = "uat" ]; then
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+              cd /home/ubuntu/Fastapi &&
+              git pull origin uat &&
+              docker build -t uatapp . &&
+              docker stop uatapp || true &&
+              docker rm uatapp || true &&
+              docker run -d --name uatapp -p 9090:8000 uatapp
+            EOF
+          fi
