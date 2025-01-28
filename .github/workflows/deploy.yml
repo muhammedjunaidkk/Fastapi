@@ -36,7 +36,7 @@ jobs:
               docker stop mainapp || true && \
               docker rm -f mainapp || true && \
               docker run -d --name mainapp -p 8080:8000 mainapp &&\
-              docker image prune -a -f"
+              docker images prune -a -f"
 
           elif [ "$GITHUB_REF_NAME" = "uat" ]; then
             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
