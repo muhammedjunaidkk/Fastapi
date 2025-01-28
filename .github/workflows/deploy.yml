@@ -28,6 +28,8 @@ jobs:
         run: |
           echo "Deploying branch $GITHUB_REF_NAME"
 
+          git config pull.rebase false
+
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
               git pull origin main && \
