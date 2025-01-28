@@ -32,7 +32,7 @@ jobs:
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
               git pull origin main --no-rebase & \
-              docker build -t mainapp . && \
+              docker build -f Dockerfile -t mainapp . && \
               docker stop mainapp || true && \
               docker rm -f mainapp || true && \
               docker run -d --name mainapp -p 8080:8000 mainapp"
