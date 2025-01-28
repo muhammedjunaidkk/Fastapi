@@ -29,21 +29,17 @@ jobs:
           echo "Deploying branch $GITHUB_REF_NAME"
 
           if [ "$GITHUB_REF_NAME" = "main" ]; then
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-              cd /home/ubuntu/Fastapi &&
-              git pull origin main &&
-              docker build -t mainapp . &&
-              docker stop mainapp || true &&
-              docker rm mainapp || true &&
-              docker run -d --name mainapp -p 8080:8000 mainapp
-            EOF
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
+              git pull origin main && \
+              docker build -t mainapp . && \
+              docker stop mainapp || true && \
+              docker rm mainapp || true && \
+              docker run -d --name mainapp -p 8080:8000 mainapp"
           elif [ "$GITHUB_REF_NAME" = "uat" ]; then
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-              cd /home/ubuntu/Fastapi &&
-              git pull origin uat &&
-              docker build -t uatapp . &&
-              docker stop uatapp || true &&
-              docker rm uatapp || true &&
-              docker run -d --name uatapp -p 9090:8000 uatapp
-            EOF
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
+              git pull origin uat && \
+              docker build -t uatapp . && \
+              docker stop uatapp || true && \
+              docker rm uatapp || true && \
+              docker run -d --name uatapp -p 9090:8000 uatapp"
           fi
