@@ -5,5 +5,5 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     
-    return("div div ....DIVA........")
+    return("div div ....DIVA updating soon........")
 
