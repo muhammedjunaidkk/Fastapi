@@ -31,14 +31,14 @@ jobs:
 
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
-              git pull origin main && \
+              git pull origin main --no-rebase & \
               docker build -f Dockerfile -t mainapp . && \
               docker stop mainapp || true && \
               docker rm -f mainapp || true && \
               docker run -d --name mainapp -p 8080:8000 mainapp"
           elif [ "$GITHUB_REF_NAME" = "uat" ]; then
             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
-              git pull origin uat && \
+              git pull origin uat --no-rebase && \
               docker build -f Dockerfileuat -t uatapp . && \
               docker stop uatapp || true && \
               docker rm  -f uatapp || true && \
