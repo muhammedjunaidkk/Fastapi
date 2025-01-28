@@ -33,13 +33,13 @@ jobs:
               git pull origin main && \
               docker build -t mainapp . && \
               docker stop mainapp || true && \
-              docker rm mainapp || true && \
+              docker rm -f mainapp || true && \
               docker run -d --name mainapp -p 8080:8000 mainapp"
           elif [ "$GITHUB_REF_NAME" = "uat" ]; then
             ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ubuntu/Fastapi && \
               git pull origin uat && \
               docker build -f Dockerfileuat -t uatapp . && \
               docker stop uatapp || true && \
-              docker rm uatapp || true && \
+              docker rm  -f uatapp || true && \
               docker run -d --name uatapp -p 9090:8000 uatapp"
           fi
