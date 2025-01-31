@@ -5,7 +5,7 @@ import os
 app = FastAPI()
 
 @app.get("/")
-def add_name(name: str = "AMAL"):
+def add_name(name: str = "Astel"):
     """Inserts a name into the appropriate table."""
     
     # Get the environment variable 'ENV' (defaults to "UAT" if not set)
