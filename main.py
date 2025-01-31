@@ -16,4 +16,4 @@ def add_name(name: str = "Default Name"):
         execute_insert(table_name, data)
         return {"message": f"Name '{name}' added to {table_name}."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))  
