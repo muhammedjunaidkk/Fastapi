@@ -35,7 +35,7 @@ jobs:
               docker build -f Dockerfile -t mainapp . && \
               docker stop mainapp || true && \
               docker rm -f mainapp || true && \
-              docker run -d --name mainapp -p 8080:8000 mainapp &&\
+              docker run -d --name mainapp --env-file .env -p 8080:8000 mainapp &&\
               docker image prune -a -f"
 
           elif [ "$GITHUB_REF_NAME" = "uat" ]; then
@@ -44,6 +44,6 @@ jobs:
               docker build -f Dockerfileuat -t uatapp . && \
               docker stop uatapp || true && \
               docker rm  -f uatapp || true && \
-              docker run -d --name uatapp -p 9090:8000 uatapp &&\
+              docker run -d --name uatapp --env-file .env -p 9090:8000 uatapp &&\
               docker image prune -a -f"
           fi
