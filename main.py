@@ -5,11 +5,11 @@ import os
 
 app = FastAPI()
 
-@app.post("/")
-def add_name():
+@app.get("/")
+def add_name(name: str = "Default Name"):
     """Inserts a name into the appropriate table."""
     table_name = "uatinfo" if os.getenv("ENV", "UAT").upper() == "UAT" else "prodinfo"
-    name =input("enter your name")
+    
     data = {"name": name}
     
     try:
