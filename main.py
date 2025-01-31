@@ -33,4 +33,4 @@ def insert_name(name: str = "Default Name"):
         return {"message": f"Name '{name}' added to {schema}.{table_name}."}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database Error: {str(e)}")      
+        raise HTTPException(status_code=500, detail=f"Database Error: {str(e)}")        
