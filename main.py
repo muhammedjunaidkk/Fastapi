@@ -5,7 +5,7 @@ import os
 app = FastAPI()
 
 @app.get("/")
-def add_name(name: str = "Astel"):
+def add_name(name: str = "Jacob"):
     """Inserts a name into the appropriate table."""
     
     # Get the environment variable 'ENV' (no default because it will be set via Docker)
