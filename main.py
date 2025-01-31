@@ -10,7 +10,7 @@ def add_name(name: str = "AMAL"):
     
     # Get the environment variable 'ENV' (defaults to "UAT" if not set)
     env = os.getenv("ENV", "UAT").upper()
-    
+    schema = "uatdata" if env == "UAT" else "proddata" 
     # Log the environment for debugging
     print(f"Running in {env} environment.")  # This helps you confirm the environment.
     
@@ -20,7 +20,7 @@ def add_name(name: str = "AMAL"):
     data = {"name": name}
     
     try:
-        execute_insert(table_name, data)
+        execute_insert(table_name, data,schema)
         return {"message": f"Name '{name}' added to {table_name}."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
