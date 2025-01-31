@@ -8,19 +8,20 @@ app = FastAPI()
 def add_name(name: str = "Astel"):
     """Inserts a name into the appropriate table."""
     
-    # Get the environment variable 'ENV' (defaults to "UAT" if not set)
-    env = os.getenv("ENV", "UAT").upper()
-    schema = "uatdata" if env == "UAT" else "proddata" 
+    # Get the environment variable 'ENV' (no default because it will be set via Docker)
+    env = os.getenv("ENV").upper()  # No default, because ENV is guaranteed to be set
+    
+    # Get schema and table names based on the environment variable
+    schema = os.getenv(f"SCHEMA_{env}")  # Default to "uatdata" if not set
+    table_name = os.getenv(f"TABLE_{env}")  # Default to "uatinfo" if not set
+    
     # Log the environment for debugging
     print(f"Running in {env} environment.")  # This helps you confirm the environment.
-    
-    # Set the appropriate table name based on the environment
-    table_name = "uatinfo" if env == "UAT" else "prodinfo"
     
     data = {"name": name}
     
     try:
-        execute_insert(table_name, data,schema)
-        return {"message": f"Name '{name}' added to {table_name}."}
+        execute_insert(table_name, data, schema)
+        return {"message": f"Name '{name}' added to {table_name} in {schema} schema."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
