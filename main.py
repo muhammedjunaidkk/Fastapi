@@ -8,4 +8,5 @@ def read_root():
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int):
-    return {"item_id": item_id, "message": "This is your item"}
+    Statement="item_id :" ,item_id, "message : item number", item_id ,"is flagged"
+    return Statement
